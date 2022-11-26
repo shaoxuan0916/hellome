@@ -6,6 +6,7 @@ import Button from "../components/Button"
 import Link from "next/link"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase"
+import { useRouter } from 'next/router'
 
 const SignUpPage = () => {
   const [error, setError] = useState("")
@@ -13,6 +14,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("")
   // const [username, setUsername] = useState("");
   // const [confirmPassword, setConfirmPassword] = useState("")
+  let router= useRouter()
 
   const handleSignUp = (e: any) => {
     e.preventDefault()
@@ -34,6 +36,7 @@ const SignUpPage = () => {
         setError("")
         const user = userCredential.user
         console.log(user)
+        router.push(`/home/${user.uid}`)
 
         // Todo:
         // create authStore to handle authState
