@@ -6,11 +6,13 @@ import logo from "../public/logo-green.png"
 import Button from "../components/Button"
 import Link from "next/link"
 import { auth } from "../firebase"
+import { useRouter } from 'next/router'
 
 const LoginPage = () => {
   const [error, setError] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  let router= useRouter()
 
   const handleLogin = (e: any) => {
     e.preventDefault()
@@ -26,6 +28,8 @@ const LoginPage = () => {
         setError("")
         const user = userCredential.user
         console.log(user)
+        router.push(`/home/${user.uid}`)
+
         // ...
       })
       .catch((error) => {
