@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { signInWithEmailAndPassword } from "firebase/auth"
+import React, { useEffect, useState } from "react"
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth"
 import Input from "../components/Input"
 import Image from "next/image"
 import logo from "../public/logo-green.png"
@@ -14,9 +14,16 @@ const LoginPage = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const { addUser } = useAuthStore()
+  const { addUser, userProfile } = useAuthStore()
 
   let router = useRouter()
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      addUser(user)
+    })
+    return unsubscribe
+  }, [])
 
   const handleLogin = (e: any) => {
     e.preventDefault()
@@ -32,6 +39,7 @@ const LoginPage = () => {
         setError("")
         const user = userCredential.user
         console.log(user)
+        console.log("auth", auth)
         addUser(user)
         router.push(`/home/${user.uid}`)
 

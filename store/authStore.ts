@@ -1,5 +1,7 @@
+import { useEffect } from "react"
 import create from "zustand"
 import { persist } from "zustand/middleware"
+import { onAuthStateChanged } from "firebase/auth"
 
 const authStore = (set: any) => ({
   userProfile: null,
@@ -9,9 +11,11 @@ const authStore = (set: any) => ({
 })
 
 const useAuthStore = create(
-  persist(authStore, {
-    name: "auth",
-  })
-)
+    persist(authStore, {
+      name: "auth",
+    })
+  )
+
+
 
 export default useAuthStore
