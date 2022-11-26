@@ -11,7 +11,8 @@ module.exports = {
       primaryHover: "#557969", 
       secondary:"#CCE3DE",
       tertiary:"#666",
-      borderColor:"#999"
+      borderColor:"#999",
+      errorMsg:"red"
     },
     extend: {},
   },

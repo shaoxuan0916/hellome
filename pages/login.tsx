@@ -1,11 +1,38 @@
-import React from "react"
+import React, { useState } from "react"
+import { signInWithEmailAndPassword } from "firebase/auth"
 import Input from "../components/Input"
 import Image from "next/image"
 import logo from "../public/logo-green.png"
 import Button from "../components/Button"
 import Link from "next/link"
+import { auth } from "../firebase"
 
 const LoginPage = () => {
+  const [error, setError] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleLogin = (e: any) => {
+    e.preventDefault()
+
+    if (email === "" || password === "") {
+      setError("Email or Password cannot be empty")
+      return
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        setError("")
+        const user = userCredential.user
+        console.log(user)
+        // ...
+      })
+      .catch((error) => {
+        setError("Email or Password is incorrect")
+      })
+  }
+
   return (
     <div className=" h-[100vh] ">
       <div className="h-[25%] bg-secondary flex items-center justify-center">
@@ -18,15 +45,19 @@ const LoginPage = () => {
         <h3 className="text-4xl font-semibold">Log In</h3>
 
         <div className="mt-8">
-          {/* <Input label="Your Name" placeholder="This is your display name" /> */}
-          {/* <Input label="Email" placeholder="Your Email" />
+          {error && <p className="text-errorMsg">{error}</p>}
+          <Input label="Email" placeholder="Your Email" setValue={setEmail} />
           <Input
+            type="password"
             label="Password"
             placeholder="Password"
-          /> */}
-          <Button text="Log In"/>
+            setValue={setPassword}
+          />
+          <div onClick={handleLogin}>
+            <Button text="Log In" />
+          </div>
           <div className="pt-2 text-primary">
-            <Link href='/signup'>Doesn't Have An Account? Sign Up Now</Link>
+            <Link href="/signup">Doesn't Have An Account? Sign Up Now</Link>
           </div>
         </div>
       </div>
