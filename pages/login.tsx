@@ -18,12 +18,14 @@ const LoginPage = () => {
 
   let router = useRouter()
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      addUser(user)
-    })
-    return unsubscribe
-  }, [])
+  // not sure where to use
+
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
+  //     addUser(user)
+  //   })
+  //   return unsubscribe
+  // }, [])
 
   const handleLogin = (e: any) => {
     e.preventDefault()
@@ -38,12 +40,12 @@ const LoginPage = () => {
         // Signed in
         setError("")
         const user = userCredential.user
-        console.log(user)
-        console.log("auth", auth)
-        addUser(user)
-        router.push(`/home/${user.uid}`)
 
-        // ...
+        // add user to authStore
+        addUser(user)
+
+        // redirect to home page
+        router.push(`/home/${user.uid}`)
       })
       .catch((error) => {
         setError("Email or Password is incorrect")
@@ -54,7 +56,7 @@ const LoginPage = () => {
     <div className=" h-[100vh] ">
       <div className="h-[25%] bg-secondary flex items-center justify-center">
         <div>
-          <Image src={logo} alt="logo" width={300} height={200} />
+          <Image priority src={logo} alt="logo" width={300} height={200} />
         </div>
       </div>
 
@@ -63,13 +65,16 @@ const LoginPage = () => {
 
         <div className="mt-8">
           {error && <p className="text-errorMsg">{error}</p>}
-          <Input label="Email" placeholder="Your Email" setValue={setEmail} />
-          <Input
-            type="password"
-            label="Password"
-            placeholder="Password"
-            setValue={setPassword}
-          />
+
+          <form action="">
+            <Input label="Email" placeholder="Your Email" setValue={setEmail} />
+            <Input
+              type="password"
+              label="Password"
+              placeholder="Password"
+              setValue={setPassword}
+            />
+          </form>
           <div onClick={handleLogin}>
             <Button text="Log In" />
           </div>

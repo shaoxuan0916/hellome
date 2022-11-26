@@ -6,15 +6,21 @@ import Button from "../components/Button"
 import Link from "next/link"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase"
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router"
+import useAuthStore from "../store/authStore"
 
 const SignUpPage = () => {
   const [error, setError] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
+  const { addUser } = useAuthStore()
+
+  // Todo:
   // const [username, setUsername] = useState("");
   // const [confirmPassword, setConfirmPassword] = useState("")
-  let router= useRouter()
+
+  let router = useRouter()
 
   const handleSignUp = (e: any) => {
     e.preventDefault()
@@ -24,7 +30,7 @@ const SignUpPage = () => {
       return
     }
 
-    // password checking
+    // Todo: password checking
 
     // if() {
     //   return
@@ -34,18 +40,17 @@ const SignUpPage = () => {
       .then((userCredential) => {
         // Signed in
         setError("")
-        const user = userCredential.user
-        console.log(user)
-        router.push(`/home/${user.uid}`)
 
-        // Todo:
-        // create authStore to handle authState
-        // direct to home page, add authState to authStore
+        const user = userCredential.user
+
+        // add user to authStore
+        addUser(user)
+
+        // redirect to home page
+        router.push(`/home/${user.uid}`)
       })
       .catch((error) => {
         const errorMsg = error.toString()
-
-        console.log("errorMsg", errorMsg)
 
         if (errorMsg.includes("email-already-in-use")) {
           setError("User Alreay Exist")
@@ -61,7 +66,7 @@ const SignUpPage = () => {
     <div className=" h-[100vh] ">
       <div className="h-[25%] bg-secondary flex items-center justify-center">
         <div>
-          <Image src={logo} alt="logo" width={300} height={200} />
+          <Image priority src={logo} alt="logo" width={300} height={200} />
         </div>
       </div>
 
@@ -71,23 +76,22 @@ const SignUpPage = () => {
         <div className="mt-8">
           {error && <p className="text-errorMsg">{error}</p>}
 
-          {/* <Input label="Your Name" placeholder="This is your display name" /> */}
           {/* <Input label="Username" placeholder="min 6 characters" /> */}
+          <form action="">
+            <Input label="Email" placeholder="Your Email" setValue={setEmail} />
+            <Input
+              type="password"
+              label="Password"
+              placeholder="min 8 charaters include upper and lower case"
+              setValue={setPassword}
+            />
 
-          <Input label="Email" placeholder="Your Email" setValue={setEmail} />
-          <Input
-            type="password"
-            label="Password"
-            placeholder="min 8 charaters include upper and lower case"
-            setValue={setPassword}
-          />
-
-          {/* <Input
+            {/* <Input
             label="Confirm Password"
             placeholder="Re-type your password"
             setValue={setConfirmPassword}
           /> */}
-
+          </form>
           <div onClick={handleSignUp}>
             <Button text="Sign Up" />
           </div>

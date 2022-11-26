@@ -7,7 +7,7 @@ import { signOut } from "firebase/auth"
 import { auth } from "../firebase"
 import useAuthStore from "../store/authStore"
 
-const NavBar = () => {
+const Navbar = () => {
   let router = useRouter()
   const { userProfile, removeUser } = useAuthStore()
 
@@ -15,34 +15,32 @@ const NavBar = () => {
 
   const handleLogout = () => {
     signOut(auth)
-      .then((userCredential) => {
+      .then(() => {
         removeUser()
         console.log("Sign Out Successfully")
-        console.log("auth", auth)
         router.push("/login")
       })
       .catch((error) => {
         console.log("Error")
       })
-    // console.log("auth", auth)
   }
 
   return (
     <>
       <div className="h-[65px] bg-secondary">
-        <div className="flex items-center justify-between px-2 pt-3 pb-1">
-          <Image src={logo} alt="logo" height={40} />
+        <div className="flex items-center justify-between px-4 pt-4 pb-2">
+          <Image src={logo} alt="logo" height={38} />
           <div
             className="text-primary cursor-pointer"
             onClick={() => setShowMenu(!showMenu)}
           >
-            <GiHamburgerMenu size={40} />
+            <GiHamburgerMenu size={30} />
           </div>
         </div>
       </div>
 
       {showMenu && (
-        <div className="bg-secondary pb-4">
+        <div className="bg-secondary py-4">
           <div>
             <div
               className="py-4 text-center cursor-pointer"
@@ -61,7 +59,7 @@ const NavBar = () => {
               Profile
             </div>
             <div
-              className="py-4 text-center cursor-pointer"
+              className="py-4 text-center cursor-pointer px-4"
               onClick={() => handleLogout()}
             >
               Log Out
@@ -73,4 +71,4 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+export default Navbar
