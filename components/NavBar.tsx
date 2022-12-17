@@ -4,19 +4,22 @@ import logo from "../public/logo-green.png"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { useRouter } from "next/router"
 import { signOut } from "firebase/auth"
+import { useSignOut } from "react-firebase-hooks/auth"
 import { auth } from "../firebase"
 import useAuthStore from "../store/authStore"
 
 const Navbar = () => {
   let router = useRouter()
   const { userProfile, removeUser } = useAuthStore()
+  const [signOut, loading, error] = useSignOut(auth)
 
   const [showMenu, setShowMenu] = useState(false)
 
-  const handleLogout = () => {
-    signOut(auth)
+  const handleLogout = async () => {
+    await signOut()
       .then(() => {
-        removeUser()
+        // may be not need store
+        // removeUser()
         console.log("Sign Out Successfully")
         router.push("/login")
       })

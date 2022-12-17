@@ -4,17 +4,21 @@ import logo from "../public/logo-green.png"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import Link from "next/link"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../firebase"
-import { useRouter } from "next/router"
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth"
+import { doc, setDoc } from "firebase/firestore"
+import { auth, db } from "../firebase"
 import useAuthStore from "../store/authStore"
+import { useRouter } from "next/router"
 
 const SignUpPage = () => {
-  const [error, setError] = useState("")
+  const [errorMsg, setErrorMsg] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const { addUser } = useAuthStore()
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth)
+  // maybe no need store
+  // const { addUser } = useAuthStore()
 
   // Todo:
   // const [username, setUsername] = useState("");
@@ -26,7 +30,7 @@ const SignUpPage = () => {
     e.preventDefault()
 
     if (email === "" || password === "") {
-      setError("Email or Password cannot be empty")
+      setErrorMsg("Email or Password cannot be empty")
       return
     }
 
@@ -36,30 +40,44 @@ const SignUpPage = () => {
     //   return
     // }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        setError("")
+    createUserWithEmailAndPassword(email, password)
+  }
 
-        const user = userCredential.user
+  if (user) {
+    // Signed in
+    setErrorMsg("")
 
-        // add user to authStore
-        addUser(user)
+    // add new user to firestore
+    try {
+      const docRef = setDoc(
+        doc(db, "users", user.user.uid),
+        {
+          email: email,
+          uid: user.user.uid,
+        },
+        { merge: true }
+      )
 
-        // redirect to home page
-        router.push(`/home/${user.uid}`)
-      })
-      .catch((error) => {
-        const errorMsg = error.toString()
+      router.push(`/home/${user.user.uid}`)
+      console.log("something hereeeeeeee")
+    } catch (e) {
+      console.error("Error adding document: ", e)
+    }
+  }
 
-        if (errorMsg.includes("email-already-in-use")) {
-          setError("User Alreay Exist")
-        } else if (errorMsg.includes("invalid-email")) {
-          setError("Invalid Email")
-        } else {
-          setError("Something Went Wrong. Please Try Again.")
-        }
-      })
+  if (error) {
+    const errorMsg = error.message
+
+    console.log("error", error)
+    console.log("errorToString", errorMsg)
+
+    if (errorMsg.includes("email-already-in-use")) {
+      setErrorMsg("User Alreay Exist")
+    } else if (errorMsg.includes("invalid-email")) {
+      setErrorMsg("Invalid Email")
+    } else {
+      setErrorMsg("Something Went Wrong. Please Try Again.")
+    }
   }
 
   return (
@@ -74,7 +92,7 @@ const SignUpPage = () => {
         <h3 className="text-4xl font-semibold">Sign Up</h3>
 
         <div className="mt-8">
-          {error && <p className="text-errorMsg">{error}</p>}
+          {error && <p className="text-errorMsg">{errorMsg}</p>}
 
           {/* <Input label="Username" placeholder="min 6 characters" /> */}
           <form action="">
