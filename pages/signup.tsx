@@ -45,7 +45,9 @@ const SignUpPage = () => {
 
   if (user) {
     // Signed in
-    setErrorMsg("")
+    if (errorMsg) {
+      setErrorMsg("")
+    }
 
     // add new user to firestore
     try {
