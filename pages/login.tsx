@@ -34,6 +34,7 @@ const LoginPage = () => {
   }
 
   if (user) {
+    // addUser(user)
     router.push(`/home/${user.user.uid}`)
   }
 

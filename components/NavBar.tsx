@@ -29,8 +29,8 @@ const Navbar = () => {
   }
 
   return (
-    <>
-      <div className="h-[65px] bg-secondary">
+    <div className="sticky">
+      <div className="h-[65px] bg-secondary sticky">
         <div className="flex items-center justify-between px-4 pt-4 pb-2">
           <Image src={logo} alt="logo" height={38} />
           <div
@@ -40,37 +40,36 @@ const Navbar = () => {
             <GiHamburgerMenu size={30} />
           </div>
         </div>
-      </div>
-
-      {showMenu && (
-        <div className="bg-secondary py-4">
-          <div>
-            <div
-              className="py-4 text-center cursor-pointer"
-              onClick={() => {
-                router.push(`/login`)
-              }}
-            >
-              Home
-            </div>
-            <div
-              className="py-4 text-center cursor-pointer"
-              onClick={() => {
-                router.push(`/profile`)
-              }}
-            >
-              Profile
-            </div>
-            <div
-              className="py-4 text-center cursor-pointer px-4"
-              onClick={() => handleLogout()}
-            >
-              Log Out
+        {showMenu && (
+          <div className="bg-secondary py-4 shadow-lg rounded-lg">
+            <div>
+              <div
+                className="py-4 text-center cursor-pointer"
+                onClick={() => {
+                  router.push(`/login`)
+                }}
+              >
+                Home
+              </div>
+              <div
+                className="py-4 text-center cursor-pointer"
+                onClick={() => {
+                  router.push(`/profile`)
+                }}
+              >
+                Profile
+              </div>
+              <div
+                className="py-4 text-center cursor-pointer px-4"
+                onClick={() => handleLogout()}
+              >
+                Log Out
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </div>
   )
 }
 
