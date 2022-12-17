@@ -9,7 +9,7 @@ module.exports = {
     colors: {
       primary: "#6B9080",
       primaryHover: "#557969", 
-      secondary:"#CCE3DE",
+      secondary:"#F6FFF8",
       tertiary:"#666",
       borderColor:"#999",
       errorMsg:"red"
