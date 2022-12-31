@@ -45,6 +45,8 @@ const SenderPage = () => {
       message: message,
       time: time,
     })
+    setName("")
+    setMessage("")
     setErrorMsg("")
     setShowModal(true)
     // toast.success("Sent Successfully");
