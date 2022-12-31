@@ -32,26 +32,44 @@ const MessageCards: NextPage<IMessageCardsProps> = ({ messagesList }) => {
       )}
 
       {messagesList && messagesList.length > 0 ? (
-        messagesList.map((item) => (
-          <div key={item.name}>
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                setModalDetails({
-                  name: item.name,
-                  time: item.time,
-                  message: item.message,
-                })
-              }}
-            >
-              <MessageCard
-                name={item.name}
-                time={item.time}
-                message={item.message}
-              />
+        messagesList.map((item) => {
+          const options: any = {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }
+
+          let updatedTime = item.time.toDate()
+
+          const newTimeFormat = new Date(updatedTime)
+
+          let editedTime = newTimeFormat.toLocaleDateString("en-In", options)
+
+          editedTime = editedTime.replace(",", "")
+
+          return (
+            <div key={item.name}>
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  setModalDetails({
+                    name: item.name,
+                    time: editedTime,
+                    message: item.message,
+                  })
+                }}
+              >
+                <MessageCard
+                  name={item.name}
+                  time={editedTime}
+                  message={item.message}
+                />
+              </div>
             </div>
-          </div>
-        ))
+          )
+        })
       ) : (
         <div className="mt-4">No Message Yet</div>
       )}

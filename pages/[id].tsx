@@ -21,17 +21,7 @@ const SenderPage = () => {
   const path = `users/${router.query.id}/messages`
   const handleSend = async () => {
     let currentdate = new Date()
-    const options: any = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }
 
-    let time = currentdate.toLocaleDateString("en-In", options)
-
-    time = time.replace(",", "")
     const uuid = uuidv4()
     const docRef = doc(db, path, `${uuid}`)
 
@@ -43,7 +33,7 @@ const SenderPage = () => {
     await setDoc(docRef, {
       name: name,
       message: message,
-      time: time,
+      time: currentdate,
     })
     setName("")
     setMessage("")
