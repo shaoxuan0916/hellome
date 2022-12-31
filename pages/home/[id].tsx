@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import Navbar from "../../components/Navbar"
+import NavBar from "../../components/NavBar"
 import useAuthStore from "../../store/authStore"
 import { db } from "../../firebase"
 import Button from "../../components/Button"
@@ -49,7 +49,7 @@ const HomePage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar />
+      <NavBar />
       {/* Copy Link Section  */}
       <div className="mx-6 pt-24">
         <div className="text-ellipsis overflow-clip border-2 px-4 py-2 rounded-lg border-borderColor text-lg font-semibold">

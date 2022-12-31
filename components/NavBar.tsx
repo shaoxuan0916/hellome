@@ -7,7 +7,7 @@ import { useSignOut } from "react-firebase-hooks/auth"
 import { auth } from "../firebase"
 import useAuthStore from "../store/authStore"
 
-const Navbar = () => {
+const NavBar = () => {
   let router = useRouter()
 
   const [signOut, loading, error] = useSignOut(auth)
@@ -86,4 +86,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default NavBar

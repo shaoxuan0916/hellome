@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import Navbar from "../../components/Navbar"
+import NavBar from "../../components/NavBar"
 import { AiOutlineArrowLeft } from "react-icons/ai"
 import useAuthStore from "../../store/authStore"
 import Input from "../../components/Input"
@@ -33,7 +33,7 @@ const ProfilePage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="max-w-[600px] mx-auto min-h-screen pb-12 bg-secondary">
-        <Navbar />
+        <NavBar />
 
         {sessionExpired && <ModalSessionExpired />}
 
