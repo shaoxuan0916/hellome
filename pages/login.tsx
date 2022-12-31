@@ -19,6 +19,8 @@ const LoginPage = () => {
 
   const [username, setUsername] = useState<any>()
 
+  const { userProfile } = useAuthStore()
+
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth)
 
@@ -69,6 +71,12 @@ const LoginPage = () => {
       }
     }
   }, [user, error, loading])
+
+  useEffect(() => {
+    if (userProfile) {
+      router.push(`/home/${userProfile.username}`)
+    }
+  }, [])
 
   return (
     <div className=" h-[100vh] bg-[#fff]">

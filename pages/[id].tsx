@@ -66,13 +66,13 @@ const SenderPage = () => {
         </div>
       </div>
       <div className="mt-20 font-mono text-textColor text-center">
-        <p className="font-medium">Create Your Own Link ?</p>
-        <div className="flex gap-4 justify-center">
+        <p className="font-medium text-lg">Create Your Own Link ?</p>
+        <div className="flex gap-4 justify-center mt-2">
           <Link href="/signup">
-            <p className="font-semibold text-primaryHover">Sign Up</p>
+            <p className="font-bold text-primaryHover text-xl">Sign Up</p>
           </Link>
           <Link href="/login">
-            <p className="font-semibold text-textColor">Log In</p>
+            <p className="font-bold text-primary text-xl">Log In</p>
           </Link>
         </div>
       </div>

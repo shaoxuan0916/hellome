@@ -19,9 +19,10 @@ const NavBar = () => {
     await signOut()
       .then(() => {
         console.log("Sign Out Successfully")
-        router.push("/login").then(() => {
-          removeUser()
-        })
+        router.push("/login")
+        // .then(() => {
+        removeUser()
+        // })
       })
       .catch((error) => {
         console.log("Error")
