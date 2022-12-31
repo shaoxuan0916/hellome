@@ -33,12 +33,13 @@ const Textarea: NextPage<ITextareaProps> = ({
       >
         {label}
       </p>
-      <textarea rows={6}
+      <textarea
+        rows={6}
         value={defaultVal && defaultVal}
         disabled={disabled && disabled}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
-        className="border-2 w-full border-borderColor bg-[#fff] rounded-md px-2 py-1 mt-2 active:border-primary"
+        className="border-2 w-full border-borderColor font-sans bg-[#fff] rounded-md px-2 py-1 mt-2 active:border-primary"
       />
     </div>
   )

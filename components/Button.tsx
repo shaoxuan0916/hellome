@@ -6,13 +6,13 @@ interface IButtonProps {
   outline?: boolean
 }
 
-const Button: NextPage<IButtonProps> = ({ text,outline }) => {
+const Button: NextPage<IButtonProps> = ({ text, outline }) => {
   return (
     <div className="w-full font-mono">
       <div
         className={
           outline
-            ? "bg-secondary flex justify-center py-2 rounded-md cursor-pointer hover:bg-primary/80 border-2 border-primary"
+            ? "bg-secondary flex justify-center py-2 rounded-md cursor-pointer hover:bg-primary/20 border-2 border-primary"
             : "bg-primary flex justify-center py-2 rounded-md cursor-pointer hover:bg-primaryHover"
         }
       >
