@@ -33,8 +33,7 @@ const HomePage = () => {
     }
   }, [docs, userProfile])
 
-  // const url = `tell.me/${userProfile?.username}`
-  const url = `localhost:3000/${userProfile?.username}`
+  const url = `tellmeee.netlify.app/${userProfile?.username}`
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(url)
