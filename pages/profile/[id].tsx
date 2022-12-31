@@ -48,7 +48,7 @@ const ProfilePage = () => {
               >
                 <AiOutlineArrowLeft />
               </div>
-              <h2 className="text-3xl font-bold text-textColor">
+              <h2 className="text-3xl font-bold text-textColor font-mono">
                 Your Profile
               </h2>
             </div>

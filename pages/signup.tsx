@@ -132,7 +132,7 @@ const SignUpPage = () => {
       </div>
 
       <div className="bg-white px-8 pt-12 pb-12 max-w-[600px] mx-auto bg-[#fff]">
-        <h3 className="text-4xl font-semibold text-textColor">Sign Up</h3>
+        <h3 className="text-4xl font-semibold text-textColor font-mono">Sign Up</h3>
 
         <div className="mt-8">
           {errorMsg && <p className="text-errorMsg">{errorMsg}</p>}
@@ -161,7 +161,7 @@ const SignUpPage = () => {
           <div onClick={handleSignUp}>
             <Button text={loading ? "Signing Up ..." : "Sign Up"} />
           </div>
-          <div className="pt-2 text-primary">
+          <div className="pt-2 text-primary font-mono">
             <Link href="/login">Already Have An Account? Login Now</Link>
           </div>
         </div>

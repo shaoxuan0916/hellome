@@ -16,32 +16,9 @@ interface IMessageCardsProps {
 const MessageCards: NextPage<IMessageCardsProps> = ({ messagesList }) => {
   const [modalDetails, setModalDetails] = useState<any>()
 
-  const updatedMessagesList = messagesList?.map((item) => {
-    const updatedTime = item.time.toDate()
-    const newTimeFormat = new Date(updatedTime)
-
-    const options: any = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }
-
-    let time = newTimeFormat.toLocaleDateString("en-In", options)
-
-    time = time.replace(",", "")
-
-    return {
-      name: item.name,
-      time: time,
-      message: item.message,
-    }
-  })
-
   return (
     <div className="mx-6">
-      <h4 className="pt-6 font-semibold text-primary text-lg bg-secondary">
+      <h4 className="pt-6 font-semibold text-primary text-lg bg-secondary font-mono">
         Your Anonymous Messages
       </h4>
 
@@ -54,8 +31,8 @@ const MessageCards: NextPage<IMessageCardsProps> = ({ messagesList }) => {
         />
       )}
 
-      {updatedMessagesList && updatedMessagesList.length > 0 ? (
-        updatedMessagesList.map((item) => (
+      {messagesList && messagesList.length > 0 ? (
+        messagesList.map((item) => (
           <div key={item.name}>
             <div
               className="cursor-pointer"
