@@ -11,6 +11,7 @@ module.exports = {
       primaryHover: "#557969", 
       secondary:"#F6FFF8",
       tertiary:"#666",
+      textColor:"#333",
       borderColor:"#999",
       errorMsg:"red"
     },

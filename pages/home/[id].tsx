@@ -1,49 +1,74 @@
 import React, { useEffect, useState } from "react"
 import Navbar from "../../components/Navbar"
 import useAuthStore from "../../store/authStore"
-import { auth, db } from "../../firebase"
-import { useRouter } from "next/router"
+import { db } from "../../firebase"
 import Button from "../../components/Button"
 import MessageCards from "../../components/MessageCards"
 import { useCollectionData } from "react-firebase-hooks/firestore"
-import { useAuthState } from "react-firebase-hooks/auth"
-import { collection } from "firebase/firestore"
+import { collection, orderBy, query } from "firebase/firestore"
+import toast from "react-hot-toast"
+import ModalSessionExpired from "../../components/ModalSessionExpired"
+import Head from "next/head"
 
 const HomePage = () => {
-  const [user] = useAuthState(auth)
+  const { userProfile } = useAuthStore()
 
   // @ts-ignore
-  const path = `users/${user?.uid}/messages`
-
-  console.log("path", path)
+  const path = `users/${userProfile?.username}/messages`
 
   const [messagesList, setMessagesList] = useState<any[]>()
 
-  const query = collection(db, path)
+  const [sessionExpired, setSessionExpired] = useState<boolean>(false)
 
-  const [docs, loading, error] = useCollectionData(query)
+  // query messages by upload time
+  const messagesQuery = query(collection(db, path), orderBy("time", "desc"))
+
+  const [docs, loading, error] = useCollectionData(messagesQuery)
 
   useEffect(() => {
     setMessagesList(docs)
-  }, [docs])
+
+    if (!userProfile) {
+      setSessionExpired(true)
+    }
+  }, [docs, userProfile])
+
+  // const url = `tell.me/${userProfile?.username}`
+  const url = `localhost:3000/${userProfile?.username}`
+
+  const handleCopyUrl = () => {
+    navigator.clipboard.writeText(url)
+    toast.success("Link Copied !")
+  }
 
   return (
-    <div className="max-w-[600px] mx-auto bg-secondary min-h-screen">
+    <div className="max-w-[600px] text-textColor mx-auto bg-secondary min-h-screen pb-12">
+      <Head>
+        <title>Tell Me</title>
+        <meta name="description" content="Send me anonymous message :)" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <Navbar />
       {/* Copy Link Section  */}
-      <div className="mx-8 pt-8">
-        <div className="border-2 px-4 py-2 rounded-lg border-borderColor text-lg font-semibold">
-          https://tell.me/username
+      <div className="mx-6 pt-24">
+        <div className="text-ellipsis overflow-clip border-2 px-4 py-2 rounded-lg border-borderColor text-lg font-semibold">
+          {url}
         </div>
-        <div className="mt-4" onClick={() => {}}>
+        <div className="mt-4" onClick={handleCopyUrl}>
           <Button text="Copy Link" />
         </div>
       </div>
 
-      <div>
-        <MessageCards messagesList={messagesList} />
-      </div>
-      {/* Todo: Home Page Contents */}
+      {sessionExpired && <ModalSessionExpired />}
+
+      {loading ? (
+        <div className="mx-8 pt-8">Loading...</div>
+      ) : (
+        <div>
+          <MessageCards messagesList={messagesList} />
+        </div>
+      )}
     </div>
   )
 }

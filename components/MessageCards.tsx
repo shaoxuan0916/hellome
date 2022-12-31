@@ -1,6 +1,7 @@
 import { NextPage } from "next"
-import React from "react"
+import React, { useState } from "react"
 import MessageCard from "./MessageCard"
+import ModalMessageCard from "./ModalMessageCard"
 
 type MessageType = {
   name: string
@@ -13,7 +14,7 @@ interface IMessageCardsProps {
 }
 
 const MessageCards: NextPage<IMessageCardsProps> = ({ messagesList }) => {
-  // console.log("messagesList in cards", messagesList)
+  const [modalDetails, setModalDetails] = useState<any>()
 
   const updatedMessagesList = messagesList?.map((item) => {
     const updatedTime = item.time.toDate()
@@ -38,21 +39,40 @@ const MessageCards: NextPage<IMessageCardsProps> = ({ messagesList }) => {
     }
   })
 
-  // console.log("updatedMessagesList", updatedMessagesList)
-
   return (
-    <div className="mx-8">
+    <div className="mx-6">
       <h4 className="pt-6 font-semibold text-primary text-lg bg-secondary">
         Your Anonymous Messages
       </h4>
+
+      {modalDetails && modalDetails !== "" && (
+        <ModalMessageCard
+          name={modalDetails.name}
+          time={modalDetails.time}
+          message={modalDetails.message}
+          setModalDetails={setModalDetails}
+        />
+      )}
+
       {updatedMessagesList && updatedMessagesList.length > 0 ? (
         updatedMessagesList.map((item) => (
           <div key={item.name}>
-            <MessageCard
-              name={item.name}
-              time={item.time}
-              message={item.message}
-            />
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setModalDetails({
+                  name: item.name,
+                  time: item.time,
+                  message: item.message,
+                })
+              }}
+            >
+              <MessageCard
+                name={item.name}
+                time={item.time}
+                message={item.message}
+              />
+            </div>
           </div>
         ))
       ) : (

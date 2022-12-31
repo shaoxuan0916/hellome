@@ -3,25 +3,25 @@ import Image from "next/image"
 import logo from "../public/logo-green.png"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { useRouter } from "next/router"
-import { signOut } from "firebase/auth"
 import { useSignOut } from "react-firebase-hooks/auth"
 import { auth } from "../firebase"
 import useAuthStore from "../store/authStore"
 
 const Navbar = () => {
   let router = useRouter()
-  const { userProfile, removeUser } = useAuthStore()
+
   const [signOut, loading, error] = useSignOut(auth)
+  const { removeUser, userProfile } = useAuthStore()
 
   const [showMenu, setShowMenu] = useState(false)
 
   const handleLogout = async () => {
     await signOut()
       .then(() => {
-        // may be not need store
-        // removeUser()
         console.log("Sign Out Successfully")
-        router.push("/login")
+        router.push("/login").then(() => {
+          removeUser()
+        })
       })
       .catch((error) => {
         console.log("Error")
@@ -29,10 +29,19 @@ const Navbar = () => {
   }
 
   return (
-    <div className="sticky">
-      <div className="h-[65px] bg-secondary sticky">
+    <div className="fixed w-full max-w-[600px] text-textColor">
+      <div className="h-[65px] bg-secondary sticky shadow-md">
         <div className="flex items-center justify-between px-4 pt-4 pb-2">
-          <Image src={logo} alt="logo" height={38} />
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              // @ts-ignore
+              router.push(`/home/${userProfile.username}`)
+              setShowMenu(false)
+            }}
+          >
+            <Image src={logo} alt="logo" height={38} />
+          </div>
           <div
             className="text-primary cursor-pointer"
             onClick={() => setShowMenu(!showMenu)}
@@ -46,7 +55,9 @@ const Navbar = () => {
               <div
                 className="py-4 text-center cursor-pointer"
                 onClick={() => {
-                  router.push(`/login`)
+                  // To fixed: router should push to xxx/username
+                  router.push(`/home/${userProfile.username}`)
+                  setShowMenu(false)
                 }}
               >
                 Home
@@ -54,7 +65,9 @@ const Navbar = () => {
               <div
                 className="py-4 text-center cursor-pointer"
                 onClick={() => {
-                  router.push(`/profile`)
+                  // To fixed: router should push to xxx/username
+                  router.push(`/profile/${userProfile.username}`)
+                  setShowMenu(false)
                 }}
               >
                 Profile

@@ -1,21 +1,23 @@
-import { useEffect } from "react"
 import create from "zustand"
 import { persist } from "zustand/middleware"
-import { onAuthStateChanged } from "firebase/auth"
 
-const authStore = (set: any) => ({
-  userProfile: null,
-  addUser: (user: any) => set({ userProfile: user }),
-  removeUser: () => set({ userProfile: null }),
- 
-})
+interface AuthState {
+  userProfile: any
+  addUser: (user: any,username:string) => void
+  removeUser: () => void
+}
 
-const useAuthStore = create(
-    persist(authStore, {
+const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      userProfile: null,
+      addUser: (user: any, username:string) => set({ userProfile: {user, username:username} }),
+      removeUser: () => set({ userProfile: null }),
+    }),
+    {
       name: "auth",
-    })
+    }
   )
-
-
+)
 
 export default useAuthStore
