@@ -68,7 +68,7 @@ const SenderPage = () => {
         <Textarea
           label="Your Message:"
           setValue={setMessage}
-          placeholder="send me anonymous messages..."
+          placeholder={`send @${router.query.id} your anonymous messages...`}
         />
         {errorMsg !== "" && <p className="text-errorMsg mb-2">{errorMsg}</p>}
         <div onClick={handleSend}>
