@@ -38,7 +38,7 @@ const SignUpPage = () => {
     if (username.match(regEx)) {
       setErrorMsg("")
     } else {
-      setErrorMsg("Please enter letters only.")
+      setErrorMsg("Username must contain only alphabets.")
     }
 
     setUsername(username.replace(/\s/g, ""))
@@ -50,6 +50,15 @@ const SignUpPage = () => {
 
   const handleSignUp = (e: any) => {
     e.preventDefault()
+
+    let regEx = /^[A-Za-z]+$/
+
+    if (username.match(regEx)) {
+      setErrorMsg("")
+    } else {
+      setErrorMsg("Username must contain only alphabets.")
+      return
+    }
 
     if (email === "" || password === "") {
       setErrorMsg("Email or Password cannot be empty")
