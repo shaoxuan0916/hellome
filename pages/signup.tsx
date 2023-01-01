@@ -32,6 +32,18 @@ const SignUpPage = () => {
     where("username", "==", username)
   )
 
+  useEffect(() => {
+    let regEx = /^[A-Za-z]+$/
+    if (!username) return
+    if (username.match(regEx)) {
+      setErrorMsg("")
+    } else {
+      setErrorMsg("Please enter letters only.")
+    }
+
+    setUsername(username.replace(/\s/g, ""))
+  }, [username])
+
   const [docs] = useCollectionData(usersQuery)
 
   let router = useRouter()
@@ -143,7 +155,7 @@ const SignUpPage = () => {
             <Input label="Email" placeholder="Your Email" setValue={setEmail} />
             <Input
               label="Username"
-              placeholder="Min 6 characters"
+              placeholder="Min 6 characters, alphabets only"
               setValue={setUsername}
             />
             <Input
